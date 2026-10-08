@@ -29,13 +29,11 @@ export async function registerUser(firstName: string, lastName: string, email: s
   return res.json();
 }
 
-export async function loginUser(firstName: string, lastName: string, email: string, password: string) {
+export async function loginUser(email: string, password: string) {
   const res = await fetch(`${BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      firstName,
-      lastName, 
       email, 
       password 
     }),
