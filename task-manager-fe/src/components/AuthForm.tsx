@@ -62,10 +62,13 @@ export default function AuthForm({ type }: AuthFormProps) {
         type === "register" ? (
           <>
             <div>
-              <label className="block text-sm font-medium">First name</label>
+              <label className="block text-sm font-medium" htmlFor="firstName">First name</label>
               <input
+                id="firstName"
                 name="firstName"
                 type="text"
+                required
+                placeholder="e.g. John"
                 className="mt-1 w-full rounded border px-3 py-2"
                 value={formData.firstName}
                 onChange={handleChange}
@@ -73,10 +76,13 @@ export default function AuthForm({ type }: AuthFormProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium">LastName</label>
+              <label className="block text-sm font-medium" htmlFor="lastName">LastName</label>
               <input
+                id="lastName"
                 name="lastName"
                 type="text"
+                required
+                placeholder="e.g. Doe"
                 className="mt-1 w-full rounded border px-3 py-2"
                 value={formData.lastName}
                 onChange={handleChange}
@@ -89,21 +95,26 @@ export default function AuthForm({ type }: AuthFormProps) {
       }
 
       <div>
-        <label className="block text-sm font-medium">Email</label>
+        <label className="block text-sm font-medium" htmlFor="email">Email</label>
         <input
-          type="email"
-          className="mt-1 w-full rounded border px-3 py-2"
+          id="email"
           name="email"
+          type="email"
+          required
+          placeholder="e.g. johnDoe@gmail.com"
+          className="mt-1 w-full rounded border px-3 py-2"
           value={formData.email}
           onChange={handleChange}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Password</label>
+        <label className="block text-sm font-medium" htmlFor="password">Password</label>
         <input
+          id="password"
           name="password"
           type="password"
+          required
           className="mt-1 w-full rounded border px-3 py-2"
           value={formData.password}
           onChange={handleChange}
