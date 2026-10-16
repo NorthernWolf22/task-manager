@@ -13,13 +13,17 @@ export default function TaskList({ tasks, onDelete } : TaskListProps) {
 
   return (
     <div className="space-y-3">
-      {tasks.map((task: Task) => (
+      {tasks?.map((task: Task) => (
         <SingleTask
           key={task.id}
           task={task} 
           onDelete={onDelete}
         />
       ))}
+
+      {!tasks || tasks.length < 1 &&
+        <p>There are no tasks to show</p>
+      }
     </div>
   );
 }

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import TaskList from "@/components/TaskList";
-import Layout from "@/components/Layout";
 import { deleteTask, getTasks } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import Wrapper from "@/components/Wrapper";
+import TaskList from "@/components/TaskList";
 
 type User = {
   userId: string;
@@ -38,30 +38,18 @@ export default function Page() {
       //if no token redirect to login page
       if (!token) {
         router.push("/login");
+        console.log('tasks page: no user token found');
         return;
       }
 
       //if no user object is found
-      if(!user) {
+      if (!user) {
         console.log("No user is stored locally");
-        return; 
+        return;
       }
 
       try {
         const data = await getTasks(token);
-
-        //if unauthorised, redirect
-        if (data.error === "unauthorized") {
-          console.log("User unauthorised, redirecting to login page");
-          router.push("/login");
-        }
-
-        //if data is not an array prevent crash
-        if (!Array.isArray(data)) {
-          console.error("Expected an array of tasks but got: ", data);
-          setTasks([]);
-          return;
-        }
 
         setTasks(data);
         setUser(user);
@@ -74,10 +62,6 @@ export default function Page() {
 
     loadTasks();
   }, []);
-
-  if (loading) {
-    return <p>Loading tasks...</p>
-  }
 
   async function handleDelete(id: string) {
     const token = localStorage.getItem("token");
@@ -103,13 +87,23 @@ export default function Page() {
   }
 
 
+  if (loading) {
+    return (
+      <Wrapper>
+        <div className="min-h-screen bg-gray-50 p-6">
+          <p>Loading...</p>
+        </div>
+      </Wrapper>
+    );
+  }
+
   return (
-    <Layout>
+    <Wrapper>
       <div className="min-h-screen bg-gray-50 p-6">
         <h1 className="mb-6 text-3xl font-bold">{user.firstName}'s tasks</h1>
 
         <TaskList tasks={tasks} onDelete={handleDelete} />
       </div>
-    </Layout>
+    </Wrapper>
   );
 }

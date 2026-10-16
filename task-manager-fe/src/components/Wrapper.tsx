@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 
-export default function Layout({
+export default function Wrapper({
   children,
 }: {
   children: React.ReactNode;

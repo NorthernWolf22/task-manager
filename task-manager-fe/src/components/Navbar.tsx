@@ -26,8 +26,6 @@ export default function Navbar() {
       </Link>
 
       <div className="space-x-4">
-        <Link href="/tasks">Tasks</Link>
-        <Link href="/tasks/create">Create</Link>
         {
           !isLoggedIn ? (
             <>
@@ -35,11 +33,15 @@ export default function Navbar() {
               <Link href="/register">Register</Link>
             </>
           ) : (
-            <button
-              onClick={handleClick}
-            >
-              Logout
-            </button>
+            <>
+              <Link href="/tasks">Tasks</Link>
+              <Link href="/tasks/create">Create</Link>
+              <button
+                onClick={handleClick}
+              >
+                Logout
+              </button>
+            </>
           )
         }
       </div>

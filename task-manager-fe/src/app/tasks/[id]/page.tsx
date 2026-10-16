@@ -1,11 +1,11 @@
 "use client";
 
-import Layout from "@/components/Layout";
-import TaskForm from "@/components/TaskForm";
 import { getTaskById } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { Task } from "../page";
+import Wrapper from "@/components/Wrapper";
+import TaskForm from "@/components/TaskForm";
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params); //the task's id
@@ -15,8 +15,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   useEffect(() => {
     async function loadTask() {
+      //get the token from local storage
       const token = localStorage.getItem("token");
 
+      //if token does not exist redirect to login
       if (!token) {
         router.push("/login");
         return;
@@ -24,12 +26,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
       try {
         const data = await getTaskById(token, id);
-
-        if (data.error === "unauthorized") {
-          console.log("You are not authorized to access or edit this task");
-          router.push("/login");
-          return;
-        }
 
         setTask(data);
       } catch (err) {
@@ -42,21 +38,34 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     loadTask();
   }, [id, router]);
 
-  if (loading) return <p>Loading task...</p>;
-  if (!task) return <p>Task not found.</p>;
+  if (loading) return (
+    <Wrapper>
+      <div className="min-h-screen bg-gray-50 p-6">
+        <p>Loading task...</p>
+      </div>
+    </Wrapper>
+  );
+
+  if (!task) return (
+    <Wrapper>
+      <div className="min-h-screen bg-gray-50 p-6">
+        <p>Task not found...</p>
+      </div>
+    </Wrapper>
+  );
 
   return (
-    <Layout>
+    <Wrapper>
       <div className="min-h-screen bg-gray-50 p-6">
         <h1 className="mb-6 text-3xl font-bold">Edit Task</h1>
 
-        <TaskForm 
+        <TaskForm
           initialTitle={task.title ?? ""}
           initialContent={task.content ?? ""}
           taskId={task.id}
           mode="edit"
         />
       </div>
-    </Layout>
+    </Wrapper>
   );
 }
