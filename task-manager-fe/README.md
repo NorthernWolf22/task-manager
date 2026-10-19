@@ -86,10 +86,74 @@
 <h3>Project structure</h3>
 <p>The project structure for the frontend highlights the architectural approach, folder organisation, and naming conventions that support a scalable and maintainable codebase.</p>
 
-//INSERT THE STRUCTURE DROPDOWN HERE
+<div>
+    <details>
+        <summary><strong>src</strong></summary>
+        <ul>
+            <li>
+                app
+                <ul>
+                    <li>
+                        login
+                        <ul>
+                            <li>page.tsx</li>
+                        </ul>
+                    </li>
+                    <li>
+                        register
+                        <ul>
+                            <li>page.tsx</li>
+                        </ul>
+                    </li>
+                    <li>
+                        tasks
+                        <ul>
+                            <li>
+                                [id]
+                                <ul>
+                                    <li>page.tsx</li>
+                                </ul>
+                            </li>
+                            <li>
+                                create
+                                <ul>
+                                    <li>page.tsx</li>
+                                </ul>
+                            </li>
+                            <li>page.tsx</li>
+                        </ul>
+                    </li>
+                    <li>
+                        layout.tsx
+                    </li>
+                    <li>
+                        note-found.tsx
+                    </li>
+                    <li>
+                        page.tsx
+                    </li>
+                </ul>
+            </li>
+            <li>
+                components
+                <ul>
+                    <li>AuthForm.tsx</li>
+                    <li>...</li>
+                </ul>
+            </li>
+            <li>
+                lib
+                <ul>
+                    <li>api.ts</li>
+                    <li>validation.ts</li>
+                </ul>
+            </li>
+        </ul>
+    </details>
+</div>
 
 <h3>Set up & Installation</h3>
-<p>Open a second terminal, then install and run the frontend with the following commands in the order provided:</p>
+<p>Once the backend installation is complete (see backend README), open a second terminal, then install and run the frontend with the following commands in the order provided:</p>
 <ol>
   <li>cd task-manager</li>
   <li>cd task-manager-fe</li>

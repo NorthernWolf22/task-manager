@@ -88,21 +88,58 @@
 <h3>Project structure</h3>
 <p>The project structure for the backend highlights the architectural approach, folder organisation, and naming conventions that support a scalable and maintainable codebase.</p>
 
-//insert structure dropdown here
+<div>
+    <details>
+        <summary><strong>prisma</strong></summary>
+        <ul>
+            <li>schema.prisma</li>
+        </ul>
+    </details>
+    <details>
+        <summary><strong>src</strong></summary>
+        <ul>
+            <li>
+                controllers
+                <ul>
+                    <li>authController.ts</li>
+                    <li>taskController.ts</li>
+                </ul>
+            </li>
+            <li>
+                lib
+                <ul>
+                    <li>prisma.ts</li>
+                </ul>
+            </li>
+            <li>
+                middleware
+                <ul>
+                    <li>auth.ts</li>
+                </ul>
+            </li>
+            <li>
+                routes
+                <ul>
+                    <li>auth.ts</li>
+                    <li>tasks.ts</li>
+                </ul>
+            </li>
+            <li>
+                services
+                <ul>
+                    <li>tasks.ts</li>
+                    <li>users.ts</li>
+                </ul>
+            </li>
+            <li>
+                server.ts
+            </li>
+        </ul>
+    </details>
+</div>
 
 <h3>Set up & Installation</h3>
-<p>To clone the project open a command line terminal and run the following command and then action the additional instruction before continuing:</p>
-<ol>
-  <li>git clone https://github.com/NorthernWolf22/task-manager.git</li>
-  <li>Prior to installing/running the backend, create a .env file under the task-manager-be folder and add your environment variables:          
-     <ol>
-        <li>DATABASE_URL=<your PostgreSQL connection string></li>
-        <li>JWT_SECRET=<your JWT secret></li>
-     </ol>
-  </li>
-</ol>
-
-<p>Open a new terminal, then install and run the backend with the following commands in the order provided:</p>
+<p>Open a new terminal, then install and run the backend with the following commands in the order provided. Once complete please refer to the README.md document in the task-manager-fe folder to continue with the final step of the installation process:</p>
 <ol>
   <li>cd task-manager</li>
   <li>cd task-manager-be</li>
