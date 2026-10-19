@@ -14,9 +14,9 @@ Together, the two halves form a cohesive full‑stack system that highlights pra
 <ol>
   <li>git clone https://github.com/NorthernWolf22/task-manager.git</li>
   <li>Prior to installing/running the backend, create a .env file under the task-manager-be folder and add your environment variables:          
-     <ol>
-        <li>DATABASE_URL=<your PostgreSQL connection string></li>
-        <li>JWT_SECRET=<your JWT secret></li>
-     </ol>
+     <ul>
+        <li>DATABASE_URL=< your PostgreSQL connection string></li>
+        <li>JWT_SECRET=< your JWT secret></li>
+     </ul>
   </li>
 </ol>
