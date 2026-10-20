@@ -11,7 +11,7 @@
 </ul>
 
 <h3>Overview</h3>
-<p>Task Manager’s backend is a Node.js and Express REST API responsible for authentication, task storage, and secure data operations. It exposes well‑structured GET, POST, PUT, and DELETE endpoints for managing tasks, all protected by JWT‑based authentication middleware to ensure users can only access their own resources. Prisma ORM provides a strongly typed interface to a PostgreSQL database, enabling reliable data modelling, migrations, and queries. The backend includes clear controller logic, meaningful HTTP status codes, structured JSON responses, and robust error handling, forming a secure and predictable foundation for the entire application.
+<p>Task Manager’s backend is a Node.js and Express REST API responsible for authentication, task storage, and secure data operations. It exposes well‑structured GET, POST, PUT, and DELETE endpoints for managing tasks, all protected by JWT‑based authentication middleware to ensure users can only access their own resources. Prisma ORM provides a strongly typed interface to a PostgreSQL database via Neon a cloud-based host, enabling reliable data modelling, migrations, and queries. The backend includes clear controller logic, meaningful HTTP status codes, structured JSON responses, and robust error handling, forming a secure and predictable foundation for the entire application.
 </p>
 
 <h3>Tech stack</h3>
@@ -30,8 +30,7 @@
 <h3>Typescript</h3>
 <ul>
     <li><p><strong>Type alias - </strong>Used custom type aliases for API response models and request body structures e.g. return res.status(400).json({ error: "Email already registered" })</p></li>
-    <li><p><strong>Typed Express request / response objects - </strong>Typed request and response objects facilitated strict routing. e.g. function register(req: Request, res: Response)</p></li>
-    <li><p><strong>Route handlers - </strong>Typed route handlers ensure predictable behaviour for all controller functions e.g. function updateTaskByIdController(req: Request, res: Response)</p></li>
+    <li><p><strong>Route handlers - </strong>API logic is separated in to the controllers which act as route handlers, their arguments; the request and response objects, facilitate strict routing. e.g. function register(req: Request, res: Response)</p></li>
     <li><p><strong>Middleware - </strong>Typed middleware enforces structure for authentication, validation, and error-handling middleware e.g. function auth(req: Request, res: Response, next: NextFunction)</p></li>
     <li><p><strong>Async functions - </strong>Async functions return a promise e.g. const existing = await getTaskById(id, user.id);</p></li>
     <li><p><strong>Array types - </strong>Used array typing for collections such as Task[] returned from a database query e.g. const tasks = await getTasks(user.id); // tasks: Task[]

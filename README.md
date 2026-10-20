@@ -1,7 +1,7 @@
 <h1>Task manager</h1>
 
 <h3>Overview</h3>
-<p>This repository contains a full‑stack task management application built in Next.js with a React + TypeScript frontend and an Express + Prisma backend. The project demonstrates a clean separation of concerns between client and server, strongly typed data models across the entire stack, and a secure authentication flow powered by JWT.
+<p>This repository contains a full‑stack task management application built with Next.js, React and TypeScript for the frontend and Node.js, Express and PostgreSQL via Prisma ORM for the backend. The project demonstrates a clean separation of concerns between client and server, strongly typed data models across the entire stack, and a secure authentication flow powered by JWT (JSON web token).
 
 The application allows users to register, log in, and manage their personal tasks through a responsive, component‑driven UI. The frontend is built with modern React patterns, typed form handling, and predictable state management, ensuring a smooth user experience and reliable client‑side validation. All interactions with the backend are performed through typed API calls, giving the client full awareness of expected request and response shapes.
 

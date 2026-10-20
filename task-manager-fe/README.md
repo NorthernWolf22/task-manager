@@ -11,7 +11,7 @@
 </ul>
 
 <h3>Overview</h3>
-<p>Task Manager’s frontend is a responsive, client‑side application built with Next.js, React, and TypeScript. It provides the full user interface for authentication, task creation, editing, and deletion, with dynamic routing and protected pages that ensure only authenticated users can access task data. Client‑side token management is used to verify user sessions, handle authorization errors, and control access to sensitive routes. The UI is structured around reusable components, typed form handling, and clear validation flows, delivering a smooth user experience backed by predictable state management and strong TypeScript safety throughout.
+<p>Task Manager’s frontend is a responsive, client‑side application built with Next.js, React, and TypeScript. It provides the full user interface for authentication, task creation, editing, and deletion, with dynamic routing and protected pages that ensure only authenticated users can access task data. Client‑side token management is used to verify user sessions, handle authorisation errors, and control access to sensitive routes. The UI is structured around reusable components, typed form handling, and clear validation flows, delivering a smooth user experience backed by predictable state management and strong TypeScript safety throughout.
 </p>
 
 <h3>Tech stack</h3>
