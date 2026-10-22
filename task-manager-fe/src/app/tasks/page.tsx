@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { deleteTask, getTasks } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { Task } from "@/types/types";
 import Wrapper from "@/components/Wrapper";
 import TaskList from "@/components/TaskList";
 
@@ -10,14 +11,6 @@ type User = {
   userId: string;
   firstName: string;
   lastName: string;
-};
-
-export type Task = {
-  id: string;
-  title: string;
-  content: string | null;
-  createdAt: string;
-  userId: string;
 };
 
 export default function Page() {
@@ -42,14 +35,28 @@ export default function Page() {
         return;
       }
 
-      //if no user object is found
-      if (!user) {
+      //if the user object doesn't have an id re-direct to login
+      if (!user.userId) {
         console.log("No user is stored locally");
+        router.push("/login");
         return;
       }
 
       try {
         const data = await getTasks(token);
+
+        if(data.error === "unauthorized") {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+
+          router.push("/login");
+          return;
+        }
+
+        if(!Array.isArray(data)) {
+          console.log("Expected Task[] but received: ", data);
+          return;
+        }
 
         setTasks(data);
         setUser(user);

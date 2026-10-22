@@ -42,7 +42,7 @@ export default function Home() {
   }, [router]);
 
   //We need to check if the token exists BEFORE it is decided what action to take: if token exists > either redirect user to /tasks  || if no token > render the return's code block
-  //the token check requires the local storage API therefore it can only be done within a useEffect AFTER hydration!
+  //the token check requires the local storage API therefore it can only be done within a useEffect AFTER hydration
   //the state is therefore required to prevent the return code block rendering prematurely, before this token check has occured.  
   if(!isTokenCheckComplete) {
     return null;

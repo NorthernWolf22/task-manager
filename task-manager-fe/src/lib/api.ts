@@ -1,17 +1,16 @@
 //This file centralises all backend calls
-//It contains two API functions that your frontend can use to communicate with your Node/Express backend
+//It contains API functions that the frontend can use to communicate with the Node/Express backend
 
-const BASE_URL = "http://localhost:3001"; //stores the URL your be is running on
+const BASE_URL = "http://localhost:3001"; //stores the URL the BE is running on
 
-//export makes this function accessible outside of this file
+//export - makes this function accessible outside of this file
 //this is an asynchronous function called registerUser
-//it accepts two parameters (email/password) both string types
-
+//it accepts four parameters (firstName, lastName, email, password) all string types
 //fetch is a JavaScript API for making HTTP requests.
-//the fetch api accepts two arguments: the endpoint your are sending the request to (localhost:3001/auth/register) and the request object
+//the fetch api accepts two arguments: the endpoint to send the request to (localhost:3001/auth/register) and the request object
 //async functions return a promise so we have to await (pause) until the BE resolves this promise and sends a response.
-//JSON.stringify serialises (converts) your JS data into json 
-//res.json() takes the response (which will be json) sent from the be and parses it back to JS to use clientside. e.g. it may send a res like this {message: 'users registered successfully'} 
+//JSON.stringify serialises (converts) the JS data into json 
+//res.json() takes the response (which will be json) sent from the BE and parses it back to JS to use clientside. e.g. it may send a res like this {message: 'users registered successfully'} 
 
 
 export async function registerUser(firstName: string, lastName: string, email: string, password: string) {
