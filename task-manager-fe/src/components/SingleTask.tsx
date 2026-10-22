@@ -1,4 +1,4 @@
-import { Task } from "@/app/tasks/page";
+import { Task } from "@/types/types";
 import Link from "next/link";
 
 type SingleTaskProps = {

@@ -3,7 +3,7 @@
 import { getTaskById } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
-import { Task } from "../page";
+import { Task } from "@/types/types";
 import Wrapper from "@/components/Wrapper";
 import TaskForm from "@/components/TaskForm";
 

@@ -193,14 +193,26 @@ export default function AuthForm({ type }: AuthFormProps) {
       : { type: "login" }
   );
 
+  //deails with errors when user attempts to log in with wrong email/password only
+  const [authError, setAuthError] = useState<string>("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
 
-    setFormData((prevFormData) => ({
+    setFormData((prevFormData: AuthFormData) => ({
       ...prevFormData,
       [name]: value
     }));
+
+    //resets the validation errors fields if a user is typing in the inputs again 
+    setErrors((prevErrors: AuthFormErrors) => ({
+      ...prevErrors,
+      [name]: undefined
+    }));
+
+    //removes error message related to incorrect email/password login when user starts typing again 
+    setAuthError("");
   }
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -212,7 +224,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         ? RegisterSchema.safeParse(formData)
         : LoginSchema.safeParse(formData);
 
-        console.log('validation: ', validation);
+    console.log('validation: ', validation);
 
     if (!validation.success) {
       //validation stores the response from the zod validation. The response will always have a success property, if true it passed, if false it has failed
@@ -261,14 +273,6 @@ export default function AuthForm({ type }: AuthFormProps) {
 
         setErrors(fieldErrors);
       } else {
-        //If if passes validation, it will return something like this:
-        // {
-        //   success:true,
-        //   data: { 
-        //        email: "tom@gmail.com",
-        //        password: "kns68^$p"
-        //   }
-        // }
         const fieldErrors: LoginFormErrors = {
           type: "login"
         };
@@ -286,7 +290,22 @@ export default function AuthForm({ type }: AuthFormProps) {
 
       return;
     }
-    
+    //If if passes validation, it will return something like this:
+    // {
+    //   success:true,
+    //   data: { 
+    //        email: "tom@gmail.com",
+    //        password: "kns68^$p"
+    //   }
+    // }
+
+    //reset error fields to clear old data after successful validation
+    setErrors(
+      formData.type === "register"
+        ? { type: "register" }
+        : { type: "login" }
+    );
+
     let data;
 
     if (formData.type === "login") {
@@ -294,7 +313,18 @@ export default function AuthForm({ type }: AuthFormProps) {
     } else {
       data = await registerUser(formData.firstName, formData.lastName, formData.email, formData.password);
     };
-    console.log(`${type} response:`, data);
+
+    //if user attempts to login with non-registered email/pw returns an error, this prevents storage of bad/ incorrect data 
+    if (data.error) {
+      setAuthError(data.error);
+      return;
+    }
+
+    //before storing a token, verify it exists. If not, store error message for user feedback:
+    if (!data.token) {
+      setAuthError("Login failed. Please try again.");
+      return;
+    }
 
     //store the JWT + user info in the browsers local storage
     localStorage.setItem("token", data.token);
@@ -410,6 +440,18 @@ export default function AuthForm({ type }: AuthFormProps) {
           </div>
         }
       </div>
+
+      {
+        authError && (
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="rounded border border-red-300 bg-red-50 p-3 text-red-700"
+          >
+            {authError}
+          </div>
+        )
+      }
 
       <button
         type="submit"

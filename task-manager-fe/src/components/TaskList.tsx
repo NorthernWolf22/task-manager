@@ -1,6 +1,5 @@
 "use client";
-import { Task } from "@/app/tasks/page";
-import Link from "next/link";
+import { Task } from "@/types/types";
 import SingleTask from "@/components/SingleTask";
 
 type TaskListProps = {
