@@ -4,24 +4,6 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Wrapper from "@/components/Wrapper";
 
-/*
-  USER JOURNEY:
-    -user types homepage in to browser
-    -browser sends a http get request to view the homepage
-    -next.js renders the initial HTML on server side (SSR). At this point:
-        -WORKS: authCheckComplete state (but NOT the setAuthCheckComplete func)
-        -DOES NOT WORK: router
-        -DOES NOT WORK: localstorage
-        -DOES NOT WORK: useEffect
-    -the browser is sent the html rendered generated via SSR. At this point it due to the if statement returning NULL, nothing will render for the user
-    -the browser downloads the JS bundle which includes:
-        -react comp code
-        -event listeners
-        -use effect
-    -react 'HYDRATES' the static html making it fully interactive / functional
-    -the code runs the useEffect, token is checked, if it exists the user is redirect but if not, the return code block is now permitted to render.   
-*/
-
 
 export default function Home() {
   const router = useRouter();

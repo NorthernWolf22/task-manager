@@ -23,6 +23,10 @@ export default function Page() {
     lastName: ""
   });
 
+  //if getTasks fetch returns an error, store error msg to provide feedback. 
+  //The type of error would be http request with incorrect endpoint / server not running 
+  const [error, setError] = useState<string>("");
+
   useEffect(() => {
     async function loadTasks() {
       const token = localStorage.getItem("token");
@@ -31,37 +35,38 @@ export default function Page() {
       //if no token redirect to login page
       if (!token) {
         router.push("/login");
-        console.log('tasks page: no user token found');
         return;
       }
 
       //if the user object doesn't have an id re-direct to login
       if (!user.userId) {
-        console.log("No user is stored locally");
         router.push("/login");
         return;
       }
 
       try {
+        //use the token from local storage to ensure the user is authorised to get their tasks
         const data = await getTasks(token);
 
-        if(data.error === "unauthorized") {
+        //if the getTasks API returns an error indicating the token is unauthorised clear local storage and redirect to login 
+        if (data.error === "unauthorized") {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
-
           router.push("/login");
           return;
         }
 
-        if(!Array.isArray(data)) {
-          console.log("Expected Task[] but received: ", data);
+        //if the getTasks API returns an error prevent data with an incorrect type from being stored in tasks state 
+        if (!Array.isArray(data)) {
           return;
         }
 
         setTasks(data);
         setUser(user);
       } catch (err) {
+        //if problem retrieving tasks from the backend log the actual err and set a user friendly error message
         console.log("Failed to fetch tasks:", err);
+        setError("We couldn't load the tasks. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -73,20 +78,23 @@ export default function Page() {
   async function handleDelete(id: string) {
     const token = localStorage.getItem("token");
 
+    //if no token redirect to login page
     if (!token) {
       router.push("/login");
       return;
     }
 
     try {
+      //use the token from local storage and the task id to ensure the user is authorised to delete their task.
       const res = await deleteTask(token, id);
 
+      //if the response returned an error render error feedback
       if (res.error) {
         console.error("Failed to delete task:", res.error);
         return;
       }
 
-      // Remove from UI
+      //if res indicates the deletion was successful remove the task from the UI
       setTasks((prev) => prev.filter((task) => task.id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
@@ -108,6 +116,18 @@ export default function Page() {
     <Wrapper>
       <div className="min-h-screen bg-gray-50 p-6">
         <h1 className="mb-6 text-3xl font-bold">{user.firstName}'s tasks</h1>
+
+        {
+          error && (
+            <div
+              role="alert"
+              aria-live="assertive"
+              className="rounded border border-red-300 bg-red-50 p-3 text-red-700"
+            >
+              {error}
+            </div>
+          )
+        }
 
         <TaskList tasks={tasks} onDelete={handleDelete} />
       </div>

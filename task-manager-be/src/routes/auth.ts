@@ -1,7 +1,7 @@
 //The main purpose of this file is to define the HTTP endpoints related to authentication and connect each endpoint to the appropriate controller function
 
 
-//ES named imports: rather than importing the entire express package, it imports the express Router function used to create a Router, which allows you to group related routes together
+//imports the express Router function used to create a Router, which allows you to group related routes together
 import { Router } from "express";
 import { register, login } from "../controllers/authController";
 
