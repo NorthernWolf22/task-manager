@@ -1,13 +1,10 @@
 //The main purpose of this file is to define the HTTP endpoints related to tasks and connect each endpoint to the appropriate controller function
 
-
-//ES named imports: rather than importing the entire express package, this just imports the router function. 
 //router allows you to create a router object letting you group related routes together. 
 import { Router } from "express";
 import { auth } from "../middleware/auth";
 import { getTasksController, createTaskController, getTaskByIdController, updateTaskByIdController, deleteTaskByIdController } from "../controllers/taskController";
 
-//create an express router using the router function and store it in a variable called router.
 //the router object has methods like: .get(), .post(), .put(), .patch(), .delete(), .use()
 const router = Router();
 

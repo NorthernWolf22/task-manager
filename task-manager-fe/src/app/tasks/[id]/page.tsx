@@ -11,7 +11,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params); //the task's id
   const router = useRouter();
   const [task, setTask] = useState<Task | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function loadTask() {

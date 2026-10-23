@@ -1,4 +1,3 @@
-//ES named imports: importing specific functions from the express package 
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { getUserById } from "../services/users";

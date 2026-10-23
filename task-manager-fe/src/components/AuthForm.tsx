@@ -5,166 +5,25 @@ import { useState } from "react";
 import { loginUser, registerUser } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
-/*
-DEFINING THE TYPE OF YOUR FORM'S STATE
-When you create your Zod lib/validation.ts schema, inference is used to automatically generate types for the register and login forms. 
-You can then import the generated type alias', RegisterFormData & LoginFormData in to the AuthForm, at this point they look like this:
 
----TYPE ALIAS---
-type RegisterFormData = {
-  firstName: string; //PROPERTY WITH STRING TYPE
-  lastName: string;
-  email: string;
-  password: string;
-}
-
----TYPE ALIAS---
-type LoginFormData = {
-  email: string;
-  password: string;
-}
-
-Each alias is then combined with an object to create a new intersection type alias:
+// Form state types combine the relevant form data type inferred by zod with a `type` property,
+// which identifies whether the form is for registration or login.
 type RegisterFormState = RegisterFormData & { type: "register" };
 type LoginFormState = LoginFormData & { type: "login" };
 
-{ type: "register" } and { type: "login" } are both objects with a single property of type 'string literal'
-
-By adding the intersection type operator & you are combining the RegisterFormData type alias with the object, which now looks like this:
----INTERSECTION TYPE ALIAS---
-type RegisterFormData = {
-  type: "register"
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
-By adding the intersection type operator & you are combining the LoginFormData type alias with the object, which now looks like this:
----INTERSECTION TYPE ALIAS---
-type LoginFormData = {
-  type: "login"
-  email: string;
-  password: string;
-}
-
-AuthFormData is created, the value can either be RegisterFormState or LoginFormState meaning this is a union type. However, because both RegisterFormState and LoginFormState share a type property with differing values, the type property is known an a discriminant making AuthFormData not just a union but more specifically a discriminated union type: 
----DISCRIMINATED UNION---
+// Discriminated union: AuthFormData can represent either a registration
+// or login form state, distinguished by the `type` property.
 type AuthFormData = RegisterFormState | LoginFormState;
 
-
-Now when you define the default inital state of the form data it will use the discriminated union type AuthFormData but you will be able to use the type property to specify which form type is currently used, this is known as type narrowing.
-//NARROWING
-const [formData, setFormData] = useState<AuthFormData>(
-    type === "register" ?
-      {
-        type: "register",
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: ""
-      } : {
-        type: "login",
-        email: "",
-        password: ""
-      });
-
-
-
-DEFINING THE TYPE OF YOUR FORM'S ERROR STATE
-When the RegisterFormState type was defined it looked like this: 
-type RegisterFormState = RegisterFormData & { type: "register" };
-
-So why do we have the additional parts added around RegisterFormData when creating the type for RegisterFormErrors?
-type RegisterFormErrors = Partial<Record<keyof RegisterFormData, string>> & { type: "register" };
-
-This is needed because the original RegisterFormState created an intersection type alias where all of the RegisterFormData properties were required but for the error state we need them to be optional. The additional code surrounding RegisterFormData is what makes the properties of the RegisterFormData optional, the result looks like this:
----INTERSECTION TYPE ALIAS---
-type RegisterFormData = {
-  type: "register"
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-}
-
-Steps to make the RegisterFormData properties optional:
-
----STEP 1---
-KEYOF operator extracts the property names of an alias, producing a union of string literal types:
-  e.g. RegisterFormData type would be "firstName" | "lastName" | "email" | "password" 
-  e.g. LoginFormData type would be "email" | "password"
-
----STEP 2---
-RECORD is a built-in TS utility type with this syntax:
-    type Record<K, V> = {
-    [P in K]: V;
-    }
-
-it creates an obj of key value pairs so RegisterFormData alias would be [firstName/Property in Key]: string/value. 
-Now it looks like this:
-{
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
----STEP 3---
-PARTIAL another built in utility type with this syntax:
-type Partial<T> = {
-    [P in keyof T]?: T[P];
-}
-
-adding partial is equivalent to adding ? to each property name, making the property optional. 
-Now it looks like this:
-{
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-}
-
-Each alias is then combined with an object to create a new intersection type alias:
+// Error types allow each form field to have an optional string error message.
+// `Partial<Record<keyof ..., string>>` makes every form field key optional,
+// with each value being a string error message.
 type RegisterFormErrors = Partial<Record<keyof RegisterFormData, string>> & { type: "register" };
 type LoginFormErrors = Partial<Record<keyof LoginFormData, string>> & { type: "login" };
 
-{ type: "register" } and { type: "login" } are both objects with a single property of type 'string literal'
-
-By adding the intersection type operator & you are combining the RegisterFormData type alias with the object, which now looks like this:
----INTERSECTION TYPE ALIAS---
-type RegisterFormData = {
-  type: "register"
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-}
-
-By adding the intersection type operator & you are combining the LoginFormData type alias with the object, which now looks like this:
----INTERSECTION TYPE ALIAS---
-type LoginFormData = {
-  type: "login"
-  email?: string;
-  password?: string;
-}
-
-AuthFormErrors is created, the value can either be RegisterFormErrors or LoginFormErrors meaning this is a union type. However, because both RegisterFormErrors and LoginFormErrors share a type property with differing values, the type property is known as a discriminant making AuthFormErrors not just a union but more specifically a discriminated union type: 
----DISCRIMINATED UNION---
+// Discriminated union: AuthFormErrors can represent either registration
+// or login form field errors, distinguished by the `type` property.
 type AuthFormErrors = RegisterFormErrors | LoginFormErrors;
-
-By making the properties of RegisterFormErrors and LoginFormErrors optional it means that if only 1 of the propeties returned an error when validated by zod, the error's state will only consist of the property which errored and not unnecessarily include the others which did not have errors. This approach means the validation.ts schema can be updated and the type alias for the forms will automatically update to match it, keeping everything in sync! 
-*/
-
-
-
-type RegisterFormState = RegisterFormData & { type: "register" };
-type LoginFormState = LoginFormData & { type: "login" };
-type AuthFormData = RegisterFormState | LoginFormState; //AuthFormData is a discriminated union type
-
-type RegisterFormErrors = Partial<Record<keyof RegisterFormData, string>> & { type: "register" };
-type LoginFormErrors = Partial<Record<keyof LoginFormData, string>> & { type: "login" };
-type AuthFormErrors = RegisterFormErrors | LoginFormErrors; //AuthFormErrors is a discriminated union
 
 type AuthFormProps = {
   type: "login" | "register"; //string literal union
@@ -173,6 +32,7 @@ type AuthFormProps = {
 export default function AuthForm({ type }: AuthFormProps) {
   const router = useRouter();
 
+  //stores the data from the form fields
   const [formData, setFormData] = useState<AuthFormData>(
     type === "register" ?
       {
@@ -187,31 +47,33 @@ export default function AuthForm({ type }: AuthFormProps) {
         password: ""
       });
 
+  //stores message errors returned by zod schema after validation of formData fields
   const [errors, setErrors] = useState<AuthFormErrors>(
     type === "register"
       ? { type: "register" }
       : { type: "login" }
   );
 
-  //deails with errors when user attempts to log in with wrong email/password only
+  //stores a message used to provide error feedback for authorisation failures (e.g. if user attempts to log in with wrong email/password)
   const [authError, setAuthError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
 
+    //captures changes to each form data field
     setFormData((prevFormData: AuthFormData) => ({
       ...prevFormData,
       [name]: value
     }));
 
-    //resets the validation errors fields if a user is typing in the inputs again 
+    //resets the validation errors fields if a user is typing in the inputs again
     setErrors((prevErrors: AuthFormErrors) => ({
       ...prevErrors,
       [name]: undefined
     }));
 
-    //removes error message related to incorrect email/password login when user starts typing again 
+    //removes error message related to incorrect email/password login when user starts typing again
     setAuthError("");
   }
 
@@ -224,10 +86,9 @@ export default function AuthForm({ type }: AuthFormProps) {
         ? RegisterSchema.safeParse(formData)
         : LoginSchema.safeParse(formData);
 
-    console.log('validation: ', validation);
-
+  
+    //validation stores the response from the zod validation. The response will always have a success property, if true it passed, if false it has failed
     if (!validation.success) {
-      //validation stores the response from the zod validation. The response will always have a success property, if true it passed, if false it has failed
 
       if (formData.type === "register") {
 
@@ -237,8 +98,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         };
 
         //---transforming the data---
-        //this block maps through each error returned by zod, which may look something like this:
-        // The path tells you which field the error belonged to and the message is the error text you can display to provide user feedback.
+        //the block below maps through each error returned by zod, which may look something like this:
         // {
         //   success: false,
         //   error: {
@@ -254,7 +114,9 @@ export default function AuthForm({ type }: AuthFormProps) {
         //     ]
         //   }
         // }
-        //and converts it in to a format which is easier to access from the UI when validating the fields or providing user feedback. Post transformation it looks like this:
+        //The path tells you which field the error belonged to and the message is the error text you can display to provide user feedback.
+        //this must be converted in to a format which is easier to access from the UI when validating the fields or providing user feedback. 
+        //Post transformation it looks like this:
         //{
         //    fullName: "Please enter your first name."
         //}
@@ -308,13 +170,14 @@ export default function AuthForm({ type }: AuthFormProps) {
 
     let data;
 
+    //if validation was successful, use the data collected from form fields to either login / register the user
     if (formData.type === "login") {
       data = await loginUser(formData.email, formData.password);
     } else {
       data = await registerUser(formData.firstName, formData.lastName, formData.email, formData.password);
     };
 
-    //if user attempts to login with non-registered email/pw returns an error, this prevents storage of bad/ incorrect data 
+    //if user attempts to login with non-registered email/pw the error message is stored to be used as user feedback, this prevents storage of bad/ incorrect data
     if (data.error) {
       setAuthError(data.error);
       return;
@@ -337,8 +200,6 @@ export default function AuthForm({ type }: AuthFormProps) {
     //redirect user to the tasks route
     router.push("/tasks");
   }
-
-  console.log('authform errors: ', errors);
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit} noValidate>
