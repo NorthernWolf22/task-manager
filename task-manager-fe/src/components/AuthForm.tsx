@@ -207,7 +207,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         formData.type === "register" ? (
           <>
             <div>
-              <label className="block text-sm font-medium" htmlFor="firstName">First name</label>
+              <label className="block text-sm font-medium" htmlFor="firstName">* First name</label>
               <input
                 id="firstName"
                 name="firstName"
@@ -230,7 +230,7 @@ export default function AuthForm({ type }: AuthFormProps) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium" htmlFor="lastName">LastName</label>
+              <label className="block text-sm font-medium" htmlFor="lastName">* Last name</label>
               <input
                 id="lastName"
                 name="lastName"
@@ -258,7 +258,7 @@ export default function AuthForm({ type }: AuthFormProps) {
       }
 
       <div>
-        <label className="block text-sm font-medium" htmlFor="email">Email</label>
+        <label className="block text-sm font-medium" htmlFor="email">* Email</label>
         <input
           id="email"
           name="email"
@@ -281,7 +281,7 @@ export default function AuthForm({ type }: AuthFormProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium" htmlFor="password">Password</label>
+        <label className="block text-sm font-medium" htmlFor="password">* Password</label>
         <input
           id="password"
           name="password"
